@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Delivery Assistant</string>
+    <string name="action_settings">Settings</string>
+    <string name="clear_all">Clear All Data</string>
+    <string name="sync">Sync Remote DataBase</string>
+    <string name="empty">No items in the database!</string>
+    <string name="detail_name">Enter Item Name</string>
+    <string name="detail_receiver">Enter Receiver Name</string>
+    <string name="detail_address">Enter Receiver Address</string>
+    <string name="confirmButton">Confirm</string>
+
+</resources>

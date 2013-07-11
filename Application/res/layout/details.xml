@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <Spinner
+        android:id="@+id/detail_completion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/state" >
+    </Spinner>
+
+    <LinearLayout
+        android:id="@+id/LinearLayout01"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/detail_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/detail_name"
+            android:imeOptions="actionNext" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/detail_receiver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/detail_receiver"
+            android:imeOptions="actionNext" >
+        </TextView>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/detail_address"
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:gravity="top"
+        android:hint="@string/detail_address"
+        android:imeOptions="actionNext" >
+    </TextView>
+
+    <Button
+        android:id="@+id/confirmButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/confirmButton" >
+    </Button>
+
+</LinearLayout>
