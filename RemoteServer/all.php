@@ -24,7 +24,9 @@ if (mysql_num_rows($result) > 0) {
         $product["name"] = $row["name"];
         $product["receiver"] = $row["receiver"];
         $product["address"] = $row["address"];
-        $product["completion"] = $row["completion"];
+        $product["time"] = $row["time"];
+        $product["completed"] = $row["completed"];
+        $product["flag"] = $row["flag"];
  
         // push single product into final response array
         array_push($response["products"], $product);
