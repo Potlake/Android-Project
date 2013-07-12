@@ -23,6 +23,7 @@ if (mysql_num_rows($result) > 0) {
         $product["pid"] = $row["pid"];
         $product["name"] = $row["name"];
         $product["receiver"] = $row["receiver"];
+        $product["number"] = $row["number"];
         $product["address"] = $row["address"];
         $product["time"] = $row["time"];
         $product["completed"] = $row["completed"];
