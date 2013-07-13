@@ -19,7 +19,6 @@ import static com.delivery.assistant.Constants.TAG_NUMBER;
 import static com.delivery.assistant.Constants.TAG_ADDRESS;
 import static com.delivery.assistant.Constants.TAG_TIME;
 import static com.delivery.assistant.Constants.TAG_COMPLETED;
-import static com.delivery.assistant.Constants.TAG_FLAG;
 
 import static com.delivery.assistant.Constants.URL_ALL_PRODUCTS;
 import static com.delivery.assistant.Constants.CONTENT_URI;
@@ -54,10 +53,12 @@ public class Assistant extends ListActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-    	case R.id.sync:
-	    clearAllItems();
-	    new LoadAllProducts().execute();
-    	    return true;
+	    case R.id.sync:
+		new syncAllProducts().execute();
+		return true;
+	    case R.id.about:
+		clearAllItems();
+		return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -104,7 +105,7 @@ public class Assistant extends ListActivity implements
         getContentResolver().delete(CONTENT_URI, null, null);
     }
 
-    class LoadAllProducts extends AsyncTask<String, String, String> {
+    class syncAllProducts extends AsyncTask<String, String, String> {
 	@Override
 	protected void onPreExecute() {
 	    super.onPreExecute();
@@ -125,29 +126,8 @@ public class Assistant extends ListActivity implements
 		int success = json.getInt(TAG_SUCCESS);
 		if (success == 1) // products found
 		{
-		    // Getting Array of Products
-		    JSONArray products = json.getJSONArray(TAG_PRODUCTS);
-		    for (int i = 0; i < products.length(); i++) {
-		    	JSONObject j = products.getJSONObject(i);
-		    	// Storing each json item in variable
-		    	String name = j.getString(TAG_NAME);
-		    	String receiver = j.getString(TAG_RECEIVER);
-		    	String number = j.getString(TAG_NUMBER);
-		    	String address = j.getString(TAG_ADDRESS);
-		    	String time = j.getString(TAG_TIME);
-		    	String completed = j.getString(TAG_COMPLETED);
-		    	String flag = j.getString(TAG_FLAG);
-			// Adding them to database
-			ContentValues values = new ContentValues();
-			values.put(CO_NAME, name);
-			values.put(CO_RECEIVER, receiver);
-			values.put(CO_NUMBER, number);
-			values.put(CO_ADDRESS, address);
-			values.put(CO_TIME, time);
-			values.put(CO_COMPLETED, completed);
-			values.put(CO_FLAG, flag);
-			getContentResolver().insert(CONTENT_URI, values);
-		    }
+		    clearAllItems();
+		    fillData(json);
 		}
 	    } catch (JSONException e) {
 	    	e.printStackTrace();
@@ -157,12 +137,36 @@ public class Assistant extends ListActivity implements
 	protected void onPostExecute(String file_url) {
 	    // dismiss the dialog after getting all products
 	    pDialog.dismiss();
-	    // updating UI from Background Thread
-	    runOnUiThread(new Runnable() {
-	    	public void run() {
-		    showItemList();
-	    	}
-	    });
+	}
+    }
+
+    // Put data into sqlite database
+    private void fillData(JSONObject json) {
+	// Getting Array of Products
+	try {
+	    JSONArray products = json.getJSONArray(TAG_PRODUCTS);
+	    for (int i = 0; i < products.length(); i++) {
+		JSONObject j = products.getJSONObject(i);
+		// Storing each json item in variable
+		String name = j.getString(TAG_NAME);
+	    	String receiver = j.getString(TAG_RECEIVER);
+	    	String number = j.getString(TAG_NUMBER);
+	    	String address = j.getString(TAG_ADDRESS);
+	    	String time = j.getString(TAG_TIME);
+	    	String completed = j.getString(TAG_COMPLETED);
+	    	// Adding them to database
+	    	ContentValues values = new ContentValues();
+	    	values.put(CO_NAME, name);
+	    	values.put(CO_RECEIVER, receiver);
+	    	values.put(CO_NUMBER, number);
+	    	values.put(CO_ADDRESS, address);
+	    	values.put(CO_TIME, time);
+	    	values.put(CO_COMPLETED, completed);
+	    	values.put(CO_FLAG, "0");
+	    	getContentResolver().insert(CONTENT_URI, values);
+	    }
+	} catch (JSONException e) {
+	    throw new RuntimeException(e);
 	}
     }
 }

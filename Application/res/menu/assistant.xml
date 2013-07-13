@@ -5,4 +5,9 @@
         android:orderInCategory="10"
         android:title="@string/sync"/>
 
+    <item
+        android:id="@+id/about"
+        android:orderInCategory="20"
+        android:title="@string/about"/>
+
 </menu>

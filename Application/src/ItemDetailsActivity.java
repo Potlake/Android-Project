@@ -20,6 +20,7 @@ public class ItemDetailsActivity extends Activity {
     private TextView Address;
     private TextView Time;
     private String Flag;
+    private String state;
 
     private Uri detailUri;
 
@@ -59,13 +60,14 @@ public class ItemDetailsActivity extends Activity {
 			finish();
 			break;
 		    case R.id.mapViewButton:
-			Intent i = new Intent(ItemDetailsActivity.this, ViewInMaps.class);
-			startActivity(i);
+			// Intent i = new Intent(ItemDetailsActivity.this, ViewInMaps.class);
+			// startActivity(i);
+			Toast.makeText(getApplicationContext(),
+				"Google Maps will be available soon!", 3000).show();
 			break;
 		}
 	    }
 	};
-
 	confirmButton.setOnClickListener(ButtonListener);
 	mapViewButton.setOnClickListener(ButtonListener);
 
@@ -78,11 +80,10 @@ public class ItemDetailsActivity extends Activity {
 		uri, projection, null, null, null);
 	if (cursor != null) {
 	    cursor.moveToFirst();
-	    String c = cursor.getString(cursor
-		    .getColumnIndexOrThrow(CO_COMPLETED));
+	    state = cursor.getString(cursor.getColumnIndexOrThrow(CO_COMPLETED));
 	    for (int i = 0; i < spinner.getCount(); i++) {
 	        String s = (String) spinner.getItemAtPosition(i);
-	        if (s.equalsIgnoreCase(c)) {
+	        if (s.equalsIgnoreCase(state)) {
 		    spinner.setSelection(i);
 	        }
 	    }
@@ -116,6 +117,9 @@ public class ItemDetailsActivity extends Activity {
 
     private void saveState() {
 	String completed = (String) spinner.getSelectedItem();
+	if ( !completed.equals(state) ) {
+	    Flag = "1";
+	}
 	String name = Name.getText().toString();
 	String receiver = Receiver.getText().toString();
 	String number = Number.getText().toString();

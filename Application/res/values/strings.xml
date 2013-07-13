@@ -12,5 +12,6 @@
     <string name="completed_title">Delivery Completed?</string>
     <string name="confirmButton">Confirm!</string>
     <string name="ViewInMap">View In Google Maps</string>
+    <string name="about">About us</string>
 
 </resources>

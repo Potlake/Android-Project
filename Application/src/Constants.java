@@ -22,7 +22,6 @@ public interface Constants {
     public static final String TAG_ADDRESS = "address";
     public static final String TAG_TIME = "time";
     public static final String TAG_COMPLETED = "completed";
-    public static final String TAG_FLAG = "flag";
 
     public static final String AUTHORITY = "com.delivery.assistant";
     public static final Uri CONTENT_URI = Uri.parse("content://"
