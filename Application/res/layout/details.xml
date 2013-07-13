@@ -126,6 +126,11 @@
     		    android:layout_height="wrap_content"
 		    android:layout_margin="5dip"
     		    android:textAppearance="?android:attr/textAppearanceMedium" />
+		<Button
+		    android:id="@+id/mapViewButton"
+		    android:text="@string/ViewInMap"
+		    android:layout_height="wrap_content"
+		    android:layout_width="wrap_content" />
 
     	</LinearLayout>
 

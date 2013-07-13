@@ -35,6 +35,7 @@ public class ItemDetailsActivity extends Activity {
 	Address = (TextView) findViewById(R.id.detail_address);
 	Time = (TextView) findViewById(R.id.detail_time);
 	Button confirmButton = (Button) findViewById(R.id.confirmButton);
+	Button mapViewButton = (Button) findViewById(R.id.mapViewButton);
 
 	Bundle extras = getIntent().getExtras();
 
@@ -49,12 +50,25 @@ public class ItemDetailsActivity extends Activity {
 	    fillData(detailUri);
 	}
 	
-	confirmButton.setOnClickListener(new View.OnClickListener() {
-	    public void onClick(View view) {
-		setResult(RESULT_OK); // Return data back to its parent
-		finish();
+	OnClickListener ButtonListener = new OnClickListener() {
+	    public void onClick(View v) {
+		switch(v.getId()) {
+		    case R.id.confirmButton:
+			// Return data back to its parent
+			setResult(RESULT_OK);
+			finish();
+			break;
+		    case R.id.mapViewButton:
+			Intent i = new Intent(ItemDetailsActivity.this, ViewInMaps.class);
+			startActivity(i);
+			break;
+		}
 	    }
-	});
+	};
+
+	confirmButton.setOnClickListener(ButtonListener);
+	mapViewButton.setOnClickListener(ButtonListener);
+
     }
 
     private void fillData(Uri uri) {
