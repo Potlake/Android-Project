@@ -24,8 +24,7 @@ import static com.delivery.assistant.Constants.URL_ALL_PRODUCTS;
 import static com.delivery.assistant.Constants.CONTENT_URI;
 import static com.delivery.assistant.Constants.CONTENT_ITEM_TYPE;
 
-public class Assistant extends ListActivity implements
-    LoaderManager.LoaderCallbacks<Cursor> {
+public class Assistant extends ListActivity {
     private static String[] FROM = {CO_ID, CO_NAME, 
 	CO_RECEIVER, CO_TIME, CO_COMPLETED};
     private static int[] TO = {R.id.rowid, R.id.name, R.id.receiver,
@@ -39,7 +38,8 @@ public class Assistant extends ListActivity implements
     protected void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
     	setContentView(R.layout.main);
-    	showItemList();
+	Cursor cursor = getItemList();
+    	showItemList(cursor);
     }
     
     // Create Menu
@@ -73,33 +73,20 @@ public class Assistant extends ListActivity implements
 	startActivity(i);
     }
 
+    // Get Item List
+    @SuppressWarnings("deprecation")
+    private Cursor getItemList() {
+	return managedQuery(CONTENT_URI, FROM, null, null, null);
+    }
+
     // Show Item List
-    private void showItemList() {
-	getLoaderManager().initLoader(0, null, this);
+    @SuppressWarnings("deprecation")
+    private void showItemList(Cursor cursor) {
 	adapter = new SimpleCursorAdapter(this, R.layout.item,
-		null, FROM, TO, 0);
+		cursor, FROM, TO);
         setListAdapter(adapter);
     }
 
-    // Creates a new loader after the initLoader() call
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-	CursorLoader cursorLoader = new CursorLoader(this,
-		CONTENT_URI, FROM, null, null, null);
-	return cursorLoader;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-	adapter.swapCursor(data);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-	// When data is not available, delete reference
-	adapter.swapCursor(null);
-    }
-    
     // Clear All Items
     private void clearAllItems() {
         getContentResolver().delete(CONTENT_URI, null, null);
@@ -126,7 +113,7 @@ public class Assistant extends ListActivity implements
 		int success = json.getInt(TAG_SUCCESS);
 		if (success == 1) // products found
 		{
-		    updateData();
+		    //updateData();
 		    clearAllItems();
 		    fillData(json);
 		}
@@ -142,6 +129,7 @@ public class Assistant extends ListActivity implements
     }
 
     // upload changes to remote server 未完成
+    /*
     private void updateData() {
 	String[] projection = { CO_NAME, CO_COMPLETED, CO_FLAG };
 	String flag = "1";
@@ -156,7 +144,7 @@ public class Assistant extends ListActivity implements
 		cursor.moveToNext();
 	    }
 	}
-    }
+    }*/
 
     // Put data into sqlite database
     private void fillData(JSONObject json) {

@@ -60,10 +60,8 @@ public class ItemDetailsActivity extends Activity {
 			finish();
 			break;
 		    case R.id.mapViewButton:
-			// Intent i = new Intent(ItemDetailsActivity.this, ViewInMaps.class);
-			// startActivity(i);
-			Toast.makeText(getApplicationContext(),
-				"Google Maps will be available soon!", 3000).show();
+			Intent i = new Intent(ItemDetailsActivity.this, ViewInMaps.class);
+			startActivity(i);
 			break;
 		}
 	    }
