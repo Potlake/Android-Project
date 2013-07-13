@@ -27,20 +27,33 @@ public class MyContentProvider extends ContentProvider {
    public Cursor query(Uri uri, String[] projection,
          String selection, String[] selectionArgs, String orderBy) {
 
-      if (uriMatcher.match(uri) == EVENTS_ID) {
-         long id = Long.parseLong(uri.getPathSegments().get(1));
-         selection = appendRowId(selection, id);
+       // Using SQLiteQueryBuilder
+       SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+
+       // Set the table
+       queryBuilder.setTables(TABLE_NAME);
+
+      int uriType = uriMatcher.match(uri);
+      switch (uriType) {
+	  case EVENTS:
+	      break;
+	  case EVENTS_ID:
+	      // Adding the ID to the original query
+	      queryBuilder.appendWhere(CO_ID + "="
+		      + uri.getLastPathSegment());
+	      break;
+	  default:
+	      throw new IllegalArgumentException("Unknown URI: " + uri);
       }
 
       // Get the database and run the query
       SQLiteDatabase db = delivery.getReadableDatabase();
-      Cursor cursor = db.query(TABLE_NAME, projection, selection,
-            selectionArgs, null, null, orderBy);
+      Cursor cursor = queryBuilder.query(db, projection, selection,
+	      selectionArgs, null, null, orderBy);
 
       // Tell the cursor what uri to watch, so it knows when its
       // source data changes
-      cursor.setNotificationUri(getContext().getContentResolver(),
-            uri);
+      cursor.setNotificationUri(getContext().getContentResolver(), uri);
       return cursor;
    }
    
@@ -58,15 +71,17 @@ public class MyContentProvider extends ContentProvider {
    
    @Override
    public Uri insert(Uri uri, ContentValues values) {
-      SQLiteDatabase db = delivery.getWritableDatabase();
-
-      // Validate the requested uri
-      if (uriMatcher.match(uri) != EVENTS) {
-         throw new IllegalArgumentException("Unknown URI " + uri);
-      }
-
-      // Insert into database
-      long id = db.insertOrThrow(TABLE_NAME, null, values);
+	int uriType = uriMatcher.match(uri);
+	SQLiteDatabase db = delivery.getWritableDatabase();
+	long id = 0;
+	switch (uriType) {
+	    case EVENTS:
+		id = db.insertOrThrow(TABLE_NAME, null, values);
+		break;
+	    default:
+		throw new IllegalArgumentException("Unknown URI " 
+			+ uri);
+	}
 
       // Notify any watchers of the change
       Uri newUri = ContentUris.withAppendedId(CONTENT_URI, id);
@@ -74,58 +89,64 @@ public class MyContentProvider extends ContentProvider {
       return newUri;
    }
    
-   @Override
-   public int delete(Uri uri, String selection,
+    @Override
+    public int delete(Uri uri, String selection,
          String[] selectionArgs) {
-      SQLiteDatabase db = delivery.getWritableDatabase();
-      int count;
-      switch (uriMatcher.match(uri)) {
-      case EVENTS:
-         count = db.delete(TABLE_NAME, selection, selectionArgs);
-         break;
-      case EVENTS_ID:
-         long id = Long.parseLong(uri.getPathSegments().get(1));
-         count = db.delete(TABLE_NAME, appendRowId(selection, id),
-               selectionArgs);
-         break;
-      default:
-         throw new IllegalArgumentException("Unknown URI " + uri);
-      }
+	int uriType = uriMatcher.match(uri);
+	SQLiteDatabase db = delivery.getWritableDatabase();
+	int rowsDeleted = 0;
+	switch (uriType) {
+	case EVENTS:
+	    rowsDeleted = db.delete(TABLE_NAME, selection, selectionArgs);
+	    break;
+	case EVENTS_ID:
+	    String id = uri.getLastPathSegment();
+	    if (TextUtils.isEmpty(selection)) {
+		rowsDeleted = db.delete(TABLE_NAME,
+			CO_ID + "=" + id, null);
+	    } else {
+		rowsDeleted = db.delete(TABLE_NAME,
+			CO_ID + "=" + id + " and " + selection,
+			selectionArgs);
+	    }
+	    break;
+	default:
+	    throw new IllegalArgumentException("Unknown URI " + uri);
+	}
 
-      // Notify any watchers of the change
-      getContext().getContentResolver().notifyChange(uri, null);
-      return count;
-   }
+	// Notify any watchers of the change
+	getContext().getContentResolver().notifyChange(uri, null);
+	return rowsDeleted;
+    }
    
-   @Override
-   public int update(Uri uri, ContentValues values,
-         String selection, String[] selectionArgs) {
-      SQLiteDatabase db = delivery.getWritableDatabase();
-      int count;
-      switch (uriMatcher.match(uri)) {
-      case EVENTS:
-         count = db.update(TABLE_NAME, values, selection,
-               selectionArgs);
-         break;
-      case EVENTS_ID:
-         long id = Long.parseLong(uri.getPathSegments().get(1));
-         count = db.update(TABLE_NAME, values, appendRowId(
-               selection, id), selectionArgs);
-         break;
-      default:
-         throw new IllegalArgumentException("Unknown URI " + uri);
-      }
-
-      // Notify any watchers of the change
-      getContext().getContentResolver().notifyChange(uri, null);
-      return count;
-   }
-   
-   // Append an id test to a SQL selection expression
-   private String appendRowId(String selection, long id) {
-      return CO_ID + "=" + id 
-	  + (!TextUtils.isEmpty(selection) 
-		  ? " AND (" + selection + ')' 
-		  : "");
+    @Override
+    public int update(Uri uri, ContentValues values, String selection,
+	   String[] selectionArgs) {
+	int uriType = uriMatcher.match(uri);
+	SQLiteDatabase db = delivery.getWritableDatabase();
+	int rowsUpdated = 0;
+	switch (uriType) {
+	case EVENTS:
+	    rowsUpdated = db.update(TABLE_NAME, values, selection,
+		    selectionArgs);
+	    break;
+	case EVENTS_ID:
+	    String id = uri.getLastPathSegment();
+	    if (TextUtils.isEmpty(selection)) {
+		rowsUpdated = db.update(TABLE_NAME, values,
+			CO_ID + "=" + id, null);
+	    } else {
+		rowsUpdated = db.update(TABLE_NAME, values,
+			CO_ID + "=" + id + " and " + selection,
+			selectionArgs);
+	    }
+	    break;
+	default:
+	    throw new IllegalArgumentException("Unknown URI " + uri);
+	}
+	
+	// Notify any watchers of the change
+	getContext().getContentResolver().notifyChange(uri, null);
+	return rowsUpdated;
    }
 }

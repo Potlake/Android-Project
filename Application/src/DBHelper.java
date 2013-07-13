@@ -4,8 +4,11 @@ import static com.delivery.assistant.Constants.TABLE_NAME;
 import static com.delivery.assistant.Constants.CO_ID;
 import static com.delivery.assistant.Constants.CO_NAME;
 import static com.delivery.assistant.Constants.CO_RECEIVER;
+import static com.delivery.assistant.Constants.CO_NUMBER;
 import static com.delivery.assistant.Constants.CO_ADDRESS;
-import static com.delivery.assistant.Constants.CO_COMPLETION;
+import static com.delivery.assistant.Constants.CO_TIME;
+import static com.delivery.assistant.Constants.CO_COMPLETED;
+import static com.delivery.assistant.Constants.CO_FLAG;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "delivery.db";
@@ -17,8 +20,11 @@ public class DBHelper extends SQLiteOpenHelper {
         + CO_ID + " integer primary key autoincrement, " 
         + CO_NAME + " text not null, " 
         + CO_RECEIVER + " text not null, " 
+        + CO_NUMBER + " text not null, " 
         + CO_ADDRESS + " text not null, " 
-        + CO_COMPLETION + " text"
+        + CO_TIME + " text not null, " 
+        + CO_COMPLETED + " text not null, "
+        + CO_FLAG + " text not null"
         + ");";
 
    // Create a helper object for the Events database

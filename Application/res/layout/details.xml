@@ -1,56 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
-
-    <Spinner
-        android:id="@+id/detail_completion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:entries="@array/state" >
-    </Spinner>
+    android:layout_height="fill_parent" >
 
     <LinearLayout
-        android:id="@+id/LinearLayout01"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent" >
 
-        <TextView
-            android:id="@+id/detail_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="@string/detail_name"
-            android:imeOptions="actionNext" >
-        </TextView>
+    	<LinearLayout
+    	    android:layout_width="fill_parent"
+    	    android:layout_height="wrap_content"
+    	    android:layout_marginLeft="5dip"
+    	    android:orientation="horizontal" >
 
-        <TextView
-            android:id="@+id/detail_receiver"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="@string/detail_receiver"
-            android:imeOptions="actionNext" >
-        </TextView>
+	    <TextView
+		android:id="@+id/detail_completed_title"
+		android:gravity="left|center_vertical"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/completed_title"
+		android:layout_margin="5dip"
+		android:textAppearance="?android:attr/textAppearanceSmall" />
+
+	    <Spinner
+		android:id="@+id/detail_completed"
+		android:entries="@array/states"
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent" />
+
+	</LinearLayout>
+
+    	<TextView
+    	    android:id="@+id/detail_name"
+    	    android:layout_width="match_parent"
+    	    android:layout_height="wrap_content"
+    	    android:layout_margin="10dip"
+    	    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    	<LinearLayout
+    	    android:layout_width="fill_parent"
+    	    android:layout_height="wrap_content"
+    	    android:layout_marginLeft="5dip"
+    	    android:orientation="horizontal" >
+
+    		<TextView
+    		    android:id="@+id/detail_receiver_title"
+    		    android:layout_width="80dip"
+    		    android:layout_height="wrap_content"
+    		    android:text="@string/receiver_title"
+		    android:layout_margin="5dip"
+    		    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    		<TextView
+    		    android:id="@+id/detail_receiver"
+    		    android:layout_width="match_parent"
+    		    android:layout_height="wrap_content"
+		    android:layout_margin="5dip"
+    		    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    	</LinearLayout>
+
+    	<LinearLayout
+    	    android:layout_width="fill_parent"
+    	    android:layout_height="wrap_content"
+    	    android:layout_marginLeft="5dip"
+    	    android:orientation="horizontal" >
+
+    		<TextView
+    		    android:id="@+id/detail_number_title"
+    		    android:layout_width="80dip"
+    		    android:layout_height="wrap_content"
+    		    android:text="@string/number_title"
+		    android:layout_margin="5dip"
+    		    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    		<TextView
+    		    android:id="@+id/detail_number"
+    		    android:layout_width="match_parent"
+    		    android:layout_height="wrap_content"
+		    android:layout_margin="5dip"
+    		    android:textAppearance="?android:attr/textAppearanceMedium" />
+    	</LinearLayout>
+
+    	<LinearLayout
+    	    android:layout_width="fill_parent"
+    	    android:layout_height="wrap_content"
+    	    android:layout_marginLeft="5dip"
+    	    android:orientation="horizontal" >
+
+    		<TextView
+    		    android:id="@+id/detail_time_title"
+    		    android:layout_width="80dip"
+    		    android:layout_height="wrap_content"
+    		    android:text="@string/time_title"
+		    android:layout_margin="5dip"
+    		    android:textAppearance="?android:attr/textAppearanceMedium" />
+    		
+    		<TextView
+    		    android:id="@+id/detail_time"
+    		    android:layout_width="match_parent"
+    		    android:layout_height="wrap_content"
+		    android:layout_margin="5dip"
+    		    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    	</LinearLayout>
+    		
+    	<LinearLayout
+    	    android:layout_width="fill_parent"
+    	    android:layout_height="wrap_content"
+    	    android:layout_marginLeft="5dip"
+    	    android:orientation="vertical" >
+
+    		<TextView
+    		    android:id="@+id/detail_address_title"
+    		    android:layout_width="wrap_content"
+    		    android:layout_height="wrap_content"
+    		    android:text="@string/address_title"
+		    android:layout_margin="5dip"
+    		    android:textAppearance="?android:attr/textAppearanceMedium" />
+    		
+    		<TextView
+    		    android:id="@+id/detail_address"
+    		    android:layout_width="match_parent"
+    		    android:layout_height="wrap_content"
+		    android:layout_margin="5dip"
+    		    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    	</LinearLayout>
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/detail_address"
-        android:layout_width="fill_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1"
-        android:gravity="top"
-        android:hint="@string/detail_address"
-        android:imeOptions="actionNext" >
-    </TextView>
+    <RelativeLayout
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:layout_marginLeft="10dip"
+	android:gravity="bottom">
 
-    <Button
-        android:id="@+id/confirmButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/confirmButton" >
-    </Button>
+	<Button
+	    android:id="@+id/confirmButton"
+	    android:text="@string/confirmButton"
+	    android:gravity="left|center_vertical"
+	    android:layout_height="wrap_content"
+	    android:layout_width="wrap_content" />
 
-</LinearLayout>
+    </RelativeLayout>
+
+</FrameLayout>

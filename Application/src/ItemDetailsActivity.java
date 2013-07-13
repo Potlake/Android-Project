@@ -5,15 +5,21 @@ import static com.delivery.assistant.Constants.CONTENT_URI;
 import static com.delivery.assistant.Constants.CO_ID;
 import static com.delivery.assistant.Constants.CO_NAME;
 import static com.delivery.assistant.Constants.CO_RECEIVER;
+import static com.delivery.assistant.Constants.CO_NUMBER;
 import static com.delivery.assistant.Constants.CO_ADDRESS;
-import static com.delivery.assistant.Constants.CO_COMPLETION;
+import static com.delivery.assistant.Constants.CO_TIME;
+import static com.delivery.assistant.Constants.CO_COMPLETED;
+import static com.delivery.assistant.Constants.CO_FLAG;
 
 public class ItemDetailsActivity extends Activity {
 
-    private Spinner iCompletion;
-    private TextView iName;
-    private TextView iReceiver;
-    private TextView iAddress;
+    private Spinner spinner;
+    private TextView Name;
+    private TextView Receiver;
+    private TextView Number;
+    private TextView Address;
+    private TextView Time;
+    private String Flag;
 
     private Uri detailUri;
 
@@ -22,10 +28,12 @@ public class ItemDetailsActivity extends Activity {
 	super.onCreate(bundle);
 	setContentView(R.layout.details);
 
-	iCompletion = (Spinner) findViewById(R.id.detail_completion);
-	iName = (TextView) findViewById(R.id.detail_name);
-	iReceiver = (TextView) findViewById(R.id.detail_receiver);
-	iAddress = (TextView) findViewById(R.id.detail_address);
+	spinner = (Spinner) findViewById(R.id.detail_completed);
+	Name = (TextView) findViewById(R.id.detail_name);
+	Receiver = (TextView) findViewById(R.id.detail_receiver);
+	Number = (TextView) findViewById(R.id.detail_number);
+	Address = (TextView) findViewById(R.id.detail_address);
+	Time = (TextView) findViewById(R.id.detail_time);
 	Button confirmButton = (Button) findViewById(R.id.confirmButton);
 
 	Bundle extras = getIntent().getExtras();
@@ -50,26 +58,32 @@ public class ItemDetailsActivity extends Activity {
     }
 
     private void fillData(Uri uri) {
-	String[] projection = { CO_ID, CO_NAME, CO_RECEIVER, CO_ADDRESS,
-	    CO_COMPLETION }; // Select Columns
+	String[] projection = { CO_NAME, CO_RECEIVER, CO_NUMBER, CO_ADDRESS,
+	    CO_TIME, CO_COMPLETED, CO_FLAG }; // Select Columns
 	Cursor cursor = getContentResolver().query(
 		uri, projection, null, null, null);
-	if (cursor != null){
+	if (cursor != null) {
 	    cursor.moveToFirst();
 	    String c = cursor.getString(cursor
-		    .getColumnIndexOrThrow(CO_COMPLETION));
-	    for (int i = 0; i < iCompletion.getCount(); i++) {
-	        String s = (String) iCompletion.getItemAtPosition(i);
+		    .getColumnIndexOrThrow(CO_COMPLETED));
+	    for (int i = 0; i < spinner.getCount(); i++) {
+	        String s = (String) spinner.getItemAtPosition(i);
 	        if (s.equalsIgnoreCase(c)) {
-	    	iCompletion.setSelection(i);
+		    spinner.setSelection(i);
 	        }
 	    }
-	    iName.setText(cursor.getString(
+	    Name.setText(cursor.getString(
 	    	    cursor.getColumnIndexOrThrow(CO_NAME)));
-	    iReceiver.setText(cursor.getString(
+	    Receiver.setText(cursor.getString(
 	    	    cursor.getColumnIndexOrThrow(CO_RECEIVER)));
-	    iAddress.setText(cursor.getString(
+	    Number.setText(cursor.getString(
+	    	    cursor.getColumnIndexOrThrow(CO_NUMBER)));
+	    Address.setText(cursor.getString(
 	    	    cursor.getColumnIndexOrThrow(CO_ADDRESS)));
+	    Time.setText(cursor.getString(
+	    	    cursor.getColumnIndexOrThrow(CO_TIME)));
+	    Flag = cursor.getString(
+		    cursor.getColumnIndexOrThrow(CO_FLAG));
 	    cursor.close();
 	}
     }
@@ -87,16 +101,21 @@ public class ItemDetailsActivity extends Activity {
     }
 
     private void saveState() {
-	String completion = (String) iCompletion.getSelectedItem();
-	String name = iName.getText().toString();
-	String receiver = iReceiver.getText().toString();
-	String address = iAddress.getText().toString();
+	String completed = (String) spinner.getSelectedItem();
+	String name = Name.getText().toString();
+	String receiver = Receiver.getText().toString();
+	String number = Number.getText().toString();
+	String address = Address.getText().toString();
+	String time = Time.getText().toString();
 
 	ContentValues values = new ContentValues();
-	values.put(CO_COMPLETION, completion);
+	values.put(CO_COMPLETED, completed);
 	values.put(CO_NAME, name);
 	values.put(CO_RECEIVER, receiver);
+	values.put(CO_NUMBER, number);
 	values.put(CO_ADDRESS, address);
+	values.put(CO_TIME, time);
+	values.put(CO_FLAG, Flag);
 
 	if (detailUri == null) {
 	    detailUri = getContentResolver().insert(CONTENT_URI, values);

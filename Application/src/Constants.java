@@ -6,8 +6,11 @@ public interface Constants {
     public static final String CO_ID = "_id";
     public static final String CO_NAME = "name";
     public static final String CO_RECEIVER = "receiver";
+    public static final String CO_NUMBER = "number";
     public static final String CO_ADDRESS = "address";
-    public static final String CO_COMPLETION = "completion";
+    public static final String CO_TIME = "time";
+    public static final String CO_COMPLETED = "completed";
+    public static final String CO_FLAG = "flag";
 
     // JSON Node Names
     public static final String TAG_PRODUCTS = "products";
@@ -15,8 +18,11 @@ public interface Constants {
     public static final String TAG_ID = "pid";
     public static final String TAG_NAME = "name";
     public static final String TAG_RECEIVER = "receiver";
+    public static final String TAG_NUMBER = "number";
     public static final String TAG_ADDRESS = "address";
-    public static final String TAG_COMPLETION = "completion";
+    public static final String TAG_TIME = "time";
+    public static final String TAG_COMPLETED = "completed";
+    public static final String TAG_FLAG = "flag";
 
     public static final String AUTHORITY = "com.delivery.assistant";
     public static final Uri CONTENT_URI = Uri.parse("content://"

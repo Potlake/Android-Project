@@ -1,38 +1,46 @@
 package com.delivery.assistant;
 
+// All the Constants
 import static com.delivery.assistant.Constants.CO_ID;
 import static com.delivery.assistant.Constants.CO_NAME;
 import static com.delivery.assistant.Constants.CO_RECEIVER;
+import static com.delivery.assistant.Constants.CO_NUMBER;
 import static com.delivery.assistant.Constants.CO_ADDRESS;
-import static com.delivery.assistant.Constants.CO_COMPLETION;
+import static com.delivery.assistant.Constants.CO_TIME;
+import static com.delivery.assistant.Constants.CO_COMPLETED;
+import static com.delivery.assistant.Constants.CO_FLAG;
+
 import static com.delivery.assistant.Constants.TAG_PRODUCTS;
 import static com.delivery.assistant.Constants.TAG_SUCCESS;
 import static com.delivery.assistant.Constants.TAG_ID;
 import static com.delivery.assistant.Constants.TAG_NAME;
 import static com.delivery.assistant.Constants.TAG_RECEIVER;
+import static com.delivery.assistant.Constants.TAG_NUMBER;
 import static com.delivery.assistant.Constants.TAG_ADDRESS;
-import static com.delivery.assistant.Constants.TAG_COMPLETION;
+import static com.delivery.assistant.Constants.TAG_TIME;
+import static com.delivery.assistant.Constants.TAG_COMPLETED;
+import static com.delivery.assistant.Constants.TAG_FLAG;
+
 import static com.delivery.assistant.Constants.URL_ALL_PRODUCTS;
 import static com.delivery.assistant.Constants.CONTENT_URI;
 import static com.delivery.assistant.Constants.CONTENT_ITEM_TYPE;
 
-public class Assistant extends ListActivity {
-    private static String[] FROM = {CO_ID, CO_NAME, CO_RECEIVER, CO_COMPLETION};
-    private static int[] TO = {R.id.rowid, R.id.name, R.id.receiver, R.id.completion};
+public class Assistant extends ListActivity implements
+    LoaderManager.LoaderCallbacks<Cursor> {
+    private static String[] FROM = {CO_ID, CO_NAME, 
+	CO_RECEIVER, CO_TIME, CO_COMPLETED};
+    private static int[] TO = {R.id.rowid, R.id.name, R.id.receiver,
+	R.id.time, R.id.completed};
     private ProgressDialog pDialog; // Progress Dialog
     JSONParser jParser = new JSONParser(); // Creating JSON Parser object
+    private SimpleCursorAdapter adapter;
 
     // Create Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
     	setContentView(R.layout.main);
-	addNewItem("Banana", "YU ZIJIE");
-	addNewItem("Apple", "LIU YAOPENG");
-	addNewItem("Orange", "LI CHANG");
-	addNewItem("Pear", "YANG LIXIAN");
-    	Cursor cursor = getItemList();
-    	showItemList(cursor);
+    	showItemList();
     }
     
     // Create Menu
@@ -46,10 +54,8 @@ public class Assistant extends ListActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-    	case R.id.clear:
-    	    clearAllItems();
-    	    return true;
     	case R.id.sync:
+	    clearAllItems();
 	    new LoadAllProducts().execute();
     	    return true;
         }
@@ -66,26 +72,31 @@ public class Assistant extends ListActivity {
 	startActivity(i);
     }
 
-    // Add New Item
-    private void addNewItem(String name, String receiver) {
-	ContentValues values = new ContentValues();
-	values.put("name", name);
-	values.put("receiver", receiver);
-	values.put("completion", "Not completed");
-	values.put("address", "0");
-	getContentResolver().insert(CONTENT_URI, values);
-    }
-    
-    // Get Item List
-    private Cursor getItemList() {
-        return managedQuery(CONTENT_URI, FROM, null, null, null);
-    }
-    
     // Show Item List
-    private void showItemList(Cursor cursor) {
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(
-    	    this, R.layout.item, cursor, FROM, TO);
+    private void showItemList() {
+	getLoaderManager().initLoader(0, null, this);
+	adapter = new SimpleCursorAdapter(this, R.layout.item,
+		null, FROM, TO, 0);
         setListAdapter(adapter);
+    }
+
+    // Creates a new loader after the initLoader() call
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+	CursorLoader cursorLoader = new CursorLoader(this,
+		CONTENT_URI, FROM, null, null, null);
+	return cursorLoader;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+	adapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+	// When data is not available, delete reference
+	adapter.swapCursor(null);
     }
     
     // Clear All Items
@@ -121,14 +132,20 @@ public class Assistant extends ListActivity {
 		    	// Storing each json item in variable
 		    	String name = j.getString(TAG_NAME);
 		    	String receiver = j.getString(TAG_RECEIVER);
+		    	String number = j.getString(TAG_NUMBER);
 		    	String address = j.getString(TAG_ADDRESS);
-		    	String completion = j.getString(TAG_COMPLETION);
+		    	String time = j.getString(TAG_TIME);
+		    	String completed = j.getString(TAG_COMPLETED);
+		    	String flag = j.getString(TAG_FLAG);
 			// Adding them to database
 			ContentValues values = new ContentValues();
 			values.put(CO_NAME, name);
 			values.put(CO_RECEIVER, receiver);
+			values.put(CO_NUMBER, number);
 			values.put(CO_ADDRESS, address);
-			values.put(CO_COMPLETION, completion);
+			values.put(CO_TIME, time);
+			values.put(CO_COMPLETED, completed);
+			values.put(CO_FLAG, flag);
 			getContentResolver().insert(CONTENT_URI, values);
 		    }
 		}
@@ -143,8 +160,7 @@ public class Assistant extends ListActivity {
 	    // updating UI from Background Thread
 	    runOnUiThread(new Runnable() {
 	    	public void run() {
-		    Cursor cursor = getItemList();
-		    showItemList(cursor);
+		    showItemList();
 	    	}
 	    });
 	}

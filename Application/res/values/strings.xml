@@ -3,12 +3,13 @@
 
     <string name="app_name">Delivery Assistant</string>
     <string name="action_settings">Settings</string>
-    <string name="clear_all">Clear All Data</string>
     <string name="sync">Sync Remote DataBase</string>
     <string name="empty">No items in the database!</string>
-    <string name="detail_name">Enter Item Name</string>
-    <string name="detail_receiver">Enter Receiver Name</string>
-    <string name="detail_address">Enter Receiver Address</string>
-    <string name="confirmButton">Confirm</string>
+    <string name="receiver_title">Receiver</string>
+    <string name="number_title">Phone</string>
+    <string name="time_title">Time</string>
+    <string name="address_title">Address</string>
+    <string name="completed_title">Delivery Completed?</string>
+    <string name="confirmButton">Confirm!</string>
 
 </resources>
