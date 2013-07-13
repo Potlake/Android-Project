@@ -3,12 +3,9 @@
 $response = array();
  
 // check for required fields
-if (isset($_POST['pid']) && isset($_POST['name']) && isset($_POST['receiver']) && isset($_POST['address']) && isset($_POST['completion'])) {
+if (isset($_POST['name']) && isset($_POST['completion'])) {
  
-    $pid = $_POST['pid'];
     $name = $_POST['name'];
-    $receiver = $_POST['receiver'];
-    $address = $_POST['address'];
     $completion = $_POST['completion'];
  
     // include db connect class
@@ -18,7 +15,7 @@ if (isset($_POST['pid']) && isset($_POST['name']) && isset($_POST['receiver']) &
     $db = new DB_CONNECT();
  
     // mysql update row with matched pid
-    $result = mysql_query("UPDATE products SET name = '$name', receiver = '$receiver', address = '$address', completion = '$completion' WHERE pid = $pid");
+    $result = mysql_query("UPDATE products SET completion = '$completion' WHERE name = $name");
  
     // check if row inserted or not
     if ($result) {

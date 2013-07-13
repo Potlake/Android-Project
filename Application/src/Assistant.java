@@ -126,6 +126,7 @@ public class Assistant extends ListActivity implements
 		int success = json.getInt(TAG_SUCCESS);
 		if (success == 1) // products found
 		{
+		    updateData();
 		    clearAllItems();
 		    fillData(json);
 		}
@@ -137,6 +138,23 @@ public class Assistant extends ListActivity implements
 	protected void onPostExecute(String file_url) {
 	    // dismiss the dialog after getting all products
 	    pDialog.dismiss();
+	}
+    }
+
+    // upload changes to remote server 未完成
+    private void updateData() {
+	String[] projection = { CO_NAME, CO_COMPLETED, CO_FLAG };
+	String flag = "1";
+	Cursor cursor = getContentResolver().query(CONTENT_URI, projection,
+		CO_FLAG + " = " + flag, null, null );
+	if (cursor != null) {
+	    cursor.moveToFirst();
+	    HashMap<String,String> hashMap = new HashMap<String,String>();
+	    String value;
+	    while (cursor.isAfterLast() == false) {
+		hashMap.put(CO_NAME,)
+		cursor.moveToNext();
+	    }
 	}
     }
 
