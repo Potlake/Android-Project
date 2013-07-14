@@ -21,6 +21,7 @@ public class ItemDetailsActivity extends Activity {
     private TextView Time;
     private String Flag;
     private String state;
+    private String the_address;
 
     private Uri detailUri;
 
@@ -60,7 +61,8 @@ public class ItemDetailsActivity extends Activity {
 			finish();
 			break;
 		    case R.id.mapViewButton:
-			Intent i = new Intent(ItemDetailsActivity.this, ViewInMaps.class);
+			Intent i = new Intent(getApplicationContext(), ViewInMaps.class);
+			i.putExtra("receiver_address", the_address);
 			startActivity(i);
 			break;
 		}
@@ -93,6 +95,8 @@ public class ItemDetailsActivity extends Activity {
 	    	    cursor.getColumnIndexOrThrow(CO_NUMBER)));
 	    Address.setText(cursor.getString(
 	    	    cursor.getColumnIndexOrThrow(CO_ADDRESS)));
+	    the_address = cursor.getString(
+		    cursor.getColumnIndexOrThrow(CO_ADDRESS));
 	    Time.setText(cursor.getString(
 	    	    cursor.getColumnIndexOrThrow(CO_TIME)));
 	    Flag = cursor.getString(
