@@ -3,10 +3,10 @@
 $response = array();
  
 // check for required fields
-if (isset($_POST['name']) && isset($_POST['completion'])) {
+if (isset($_POST['number']) && isset($_POST['completed'])) {
  
-    $name = $_POST['name'];
-    $completion = $_POST['completion'];
+    $number = $_POST['number'];
+    $completed = $_POST['completed'];
  
     // include db connect class
     require_once __DIR__ . '/connect.php';
@@ -14,8 +14,8 @@ if (isset($_POST['name']) && isset($_POST['completion'])) {
     // connecting to db
     $db = new DB_CONNECT();
  
-    // mysql update row with matched pid
-    $result = mysql_query("UPDATE products SET completion = '$completion' WHERE name = $name");
+    // mysql update row with matched number
+    $result = mysql_query("UPDATE products SET completed = '$completed' WHERE number = $number");
  
     // check if row inserted or not
     if ($result) {

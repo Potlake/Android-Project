@@ -21,6 +21,7 @@ import static com.delivery.assistant.Constants.TAG_TIME;
 import static com.delivery.assistant.Constants.TAG_COMPLETED;
 
 import static com.delivery.assistant.Constants.URL_ALL_PRODUCTS;
+import static com.delivery.assistant.Constants.URL_UPDATE_PRODUCTS;
 import static com.delivery.assistant.Constants.CONTENT_URI;
 import static com.delivery.assistant.Constants.CONTENT_ITEM_TYPE;
 
@@ -106,6 +107,8 @@ public class Assistant extends ListActivity {
 	protected String doInBackground(String... args) {
 	    // Building Parameters
 	    List<NameValuePair> params = new ArrayList<NameValuePair>();
+	    // Upload local data to server
+	    updateData();
 	    // getting JSON string from URL
 	    JSONObject json = jParser.makeHttpRequest(URL_ALL_PRODUCTS, "GET", params);
 	    try {
@@ -113,7 +116,6 @@ public class Assistant extends ListActivity {
 		int success = json.getInt(TAG_SUCCESS);
 		if (success == 1) // products found
 		{
-		    //updateData();
 		    clearAllItems();
 		    fillData(json);
 		}
@@ -128,23 +130,27 @@ public class Assistant extends ListActivity {
 	}
     }
 
-    // upload changes to remote server 未完成
-    /*
+    // upload changes to remote server
     private void updateData() {
-	String[] projection = { CO_NAME, CO_COMPLETED, CO_FLAG };
+	String[] projection = { CO_NUMBER, CO_COMPLETED, CO_FLAG };
 	String flag = "1";
 	Cursor cursor = getContentResolver().query(CONTENT_URI, projection,
-		CO_FLAG + " = " + flag, null, null );
+		CO_FLAG + " = " + flag, null, null);
 	if (cursor != null) {
 	    cursor.moveToFirst();
-	    HashMap<String,String> hashMap = new HashMap<String,String>();
-	    String value;
 	    while (cursor.isAfterLast() == false) {
-		hashMap.put(CO_NAME,)
+		String number = cursor.getString(
+			cursor.getColumnIndexOrThrow(CO_NUMBER));
+		String completed = cursor.getString(
+			cursor.getColumnIndexOrThrow(CO_COMPLETED));
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair(CO_NUMBER,number));
+		params.add(new BasicNameValuePair(CO_COMPLETED,completed));
+		jParser.makeHttpRequest(URL_UPDATE_PRODUCTS, "POST", params);
 		cursor.moveToNext();
 	    }
 	}
-    }*/
+    }
 
     // Put data into sqlite database
     private void fillData(JSONObject json) {

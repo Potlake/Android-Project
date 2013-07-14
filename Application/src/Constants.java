@@ -38,4 +38,6 @@ public interface Constants {
     // URLs
     public static final String URL_ALL_PRODUCTS
 	= "http://yuz.me/android/all.php";
+    public static final String URL_UPDATE_PRODUCTS
+	= "http://yuz.me/android/update.php";
 }
