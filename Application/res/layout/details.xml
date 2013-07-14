@@ -126,11 +126,28 @@
     		    android:layout_height="wrap_content"
 		    android:layout_margin="5dip"
     		    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    	</LinearLayout>
+
+    	<LinearLayout
+    	    android:layout_width="fill_parent"
+    	    android:layout_height="wrap_content"
+    	    android:layout_marginLeft="5dip"
+    	    android:orientation="horizontal" >
+
 		<Button
 		    android:id="@+id/mapViewButton"
 		    android:text="@string/ViewInMap"
+		    android:layout_weight="1"
 		    android:layout_height="wrap_content"
-		    android:layout_width="wrap_content" />
+		    android:layout_width="fill_parent" />
+
+		<Button
+		    android:id="@+id/callButton"
+		    android:text="@string/callButton"
+		    android:layout_weight="1"
+		    android:layout_height="wrap_content"
+		    android:layout_width="fill_parent" />
 
     	</LinearLayout>
 
@@ -139,13 +156,14 @@
     <RelativeLayout
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:layout_marginLeft="10dip"
+	android:layout_marginBottom="10dip"
 	android:gravity="bottom">
 
 	<Button
 	    android:id="@+id/confirmButton"
 	    android:text="@string/confirmButton"
 	    android:gravity="left|center_vertical"
+	    android:layout_marginLeft="10dip"
 	    android:layout_height="wrap_content"
 	    android:layout_width="wrap_content" />
 

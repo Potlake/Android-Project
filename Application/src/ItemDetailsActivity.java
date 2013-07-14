@@ -22,6 +22,7 @@ public class ItemDetailsActivity extends Activity {
     private String Flag;
     private String state;
     private String the_address;
+    private String phone_number;
 
     private Uri detailUri;
 
@@ -38,6 +39,7 @@ public class ItemDetailsActivity extends Activity {
 	Time = (TextView) findViewById(R.id.detail_time);
 	Button confirmButton = (Button) findViewById(R.id.confirmButton);
 	Button mapViewButton = (Button) findViewById(R.id.mapViewButton);
+	Button callButton = (Button) findViewById(R.id.callButton);
 
 	Bundle extras = getIntent().getExtras();
 
@@ -51,6 +53,13 @@ public class ItemDetailsActivity extends Activity {
 		.getParcelable(CONTENT_ITEM_TYPE);
 	    fillData(detailUri);
 	}
+
+	// add PhoneStateListener
+	PhoneCallListener phoneListener = new PhoneCallListener();
+	TelephonyManager telephonyManager = (TelephonyManager) this
+		.getSystemService(Context.TELEPHONY_SERVICE);
+	telephonyManager.listen(phoneListener,
+		PhoneStateListener.LISTEN_CALL_STATE);
 	
 	OnClickListener ButtonListener = new OnClickListener() {
 	    public void onClick(View v) {
@@ -65,12 +74,17 @@ public class ItemDetailsActivity extends Activity {
 			i.putExtra("receiver_address", the_address);
 			startActivity(i);
 			break;
+		    case R.id.callButton:
+			Intent callIntent = new Intent(Intent.ACTION_CALL);
+			callIntent.setData(Uri.parse("tel:" + phone_number));
+			startActivity(callIntent);
 		}
 	    }
 	};
+
 	confirmButton.setOnClickListener(ButtonListener);
 	mapViewButton.setOnClickListener(ButtonListener);
-
+	callButton.setOnClickListener(ButtonListener);
     }
 
     private void fillData(Uri uri) {
@@ -93,6 +107,8 @@ public class ItemDetailsActivity extends Activity {
 	    	    cursor.getColumnIndexOrThrow(CO_RECEIVER)));
 	    Number.setText(cursor.getString(
 	    	    cursor.getColumnIndexOrThrow(CO_NUMBER)));
+	    phone_number = cursor.getString(
+		    cursor.getColumnIndexOrThrow(CO_NUMBER));
 	    Address.setText(cursor.getString(
 	    	    cursor.getColumnIndexOrThrow(CO_ADDRESS)));
 	    the_address = cursor.getString(
@@ -141,6 +157,35 @@ public class ItemDetailsActivity extends Activity {
 	    detailUri = getContentResolver().insert(CONTENT_URI, values);
 	} else {
 	    getContentResolver().update(detailUri, values, null, null);
+	}
+    }
+
+    private class PhoneCallListener extends PhoneStateListener {
+	private boolean isPhoneCalling = false;
+	String LogTag = "PHONE CALL LOGGING";
+	@Override
+	public void onCallStateChanged(int state, String incomingNumber) {
+	    if (TelephonyManager.CALL_STATE_RINGING == state) {
+		Log.i(LogTag, "RINGING, number: " + incomingNumber);
+	    }
+	    if (TelephonyManager.CALL_STATE_OFFHOOK == state) {
+		Log.i(LogTag, "OFFHOOK");
+		isPhoneCalling = true;
+	    }
+	    if (TelephonyManager.CALL_STATE_IDLE == state) {
+		// run when class initial and phone call ended,
+		// need detect flag from CALL_STATE_OFFHOOK
+		Log.i(LogTag, "IDLE");
+		if (isPhoneCalling) {
+		    Log.i(LogTag, "restart app");
+		    Intent i = getBaseContext().getPackageManager()
+			.getLaunchIntentForPackage(
+				getBaseContext().getPackageName());
+		    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		    startActivity(i);
+		    isPhoneCalling = false;
+		}
+	    }
 	}
     }
 } 
