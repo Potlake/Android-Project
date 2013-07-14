@@ -65,7 +65,8 @@ public class Assistant extends ListActivity {
 		startActivityForResult(i, RESULT_SETTINGS);
 		return true;
 	    case R.id.about:
-		clearAllItems();
+		Intent j = new Intent(this, AboutActivity.class);
+		startActivity(j);
 		return true;
         }
         return super.onOptionsItemSelected(item);
