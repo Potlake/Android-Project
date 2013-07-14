@@ -4,7 +4,7 @@
     android:versionCode="3"
     android:versionName="3.0" >
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="10"
         android:targetSdkVersion="17" />
     <permission
 	android:name="com.delivery.assistant.permission.MAPS_RECEIVE"
@@ -53,6 +53,10 @@
 	<activity
 	    android:name=".ViewInMaps"
 	    android:label="Map" />
+
+	<activity
+            android:name=".SettingActivity"
+	    android:label="Setting" />
 
     </application>
 

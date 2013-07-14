@@ -33,14 +33,17 @@ public class Assistant extends ListActivity {
     private ProgressDialog pDialog; // Progress Dialog
     JSONParser jParser = new JSONParser(); // Creating JSON Parser object
     private SimpleCursorAdapter adapter;
+    private static final int RESULT_SETTINGS = 1;
 
     // Create Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
     	setContentView(R.layout.main);
-	Cursor cursor = getItemList();
-    	showItemList(cursor);
+	SharedPreferences sharedPrefs = PreferenceManager
+	    .getDefaultSharedPreferences(this);
+	boolean prefView = sharedPrefs.getBoolean("prefListView", false);
+    	showItemList(prefView);
     }
     
     // Create Menu
@@ -56,6 +59,10 @@ public class Assistant extends ListActivity {
         switch (item.getItemId()) {
 	    case R.id.sync:
 		new syncAllProducts().execute();
+		return true;
+	    case R.id.settings:
+		Intent i = new Intent(this, SettingActivity.class);
+		startActivityForResult(i, RESULT_SETTINGS);
 		return true;
 	    case R.id.about:
 		clearAllItems();
@@ -74,15 +81,44 @@ public class Assistant extends ListActivity {
 	startActivity(i);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+        case RESULT_SETTINGS:
+	    SharedPreferences sharedPrefs = PreferenceManager
+		.getDefaultSharedPreferences(this);
+	    boolean prefView = sharedPrefs.getBoolean("prefListView", false);
+	    showItemList(prefView);
+            break;
+        }
+ 
+    }
+
     // Get Item List
     @SuppressWarnings("deprecation")
     private Cursor getItemList() {
-	return managedQuery(CONTENT_URI, FROM, null, null, null);
+	return managedQuery(CONTENT_URI, FROM, null, null, CO_TIME + " ASC");
+    }
+
+    // Get Item List without completed
+    @SuppressWarnings("deprecation")
+    private Cursor getItemListWithoutCompleted() {
+	String[] state = {"no"};
+	return managedQuery(CONTENT_URI, FROM, CO_COMPLETED + " =?",
+		state, CO_TIME + " ASC");
     }
 
     // Show Item List
     @SuppressWarnings("deprecation")
-    private void showItemList(Cursor cursor) {
+    private void showItemList(boolean prefView) {
+	Cursor cursor;
+	if ( prefView == true ) {
+	    cursor = getItemListWithoutCompleted();
+	} else {
+	    cursor = getItemList();
+	}
 	adapter = new SimpleCursorAdapter(this, R.layout.item,
 		cursor, FROM, TO);
         setListAdapter(adapter);

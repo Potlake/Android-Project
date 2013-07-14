@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/display_settings" >
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="prefListView"
+            android:title="@string/hide_list" >
+        </CheckBoxPreference>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
