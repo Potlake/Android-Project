@@ -60,6 +60,10 @@
             android:name=".SettingActivity"
 	    android:label="Setting" />
 
+	<activity
+            android:name=".AboutActivity"
+	    android:label="About" />
+
     </application>
 
 </manifest>
