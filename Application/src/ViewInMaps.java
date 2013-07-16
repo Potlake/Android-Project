@@ -1,8 +1,14 @@
 package com.delivery.assistant;
 
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_HYBRID;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_NORMAL;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_SATELLITE;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_TERRAIN;
+
 public class ViewInMaps extends FragmentActivity
     implements ConnectionCallbacks, OnConnectionFailedListener,
-	       LocationListener, OnMarkerClickListener {
+	       LocationListener, OnMarkerClickListener,
+	       OnItemSelectedListener {
     private GoogleMap mMap;
     private LocationClient mLocationClient;
 
@@ -28,6 +34,12 @@ public class ViewInMaps extends FragmentActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map);
+	Spinner spinner = (Spinner) findViewById(R.id.layers_spinner);
+	ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this, R.array.layers_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
 
 	Bundle extras = getIntent().getExtras();
 
@@ -120,13 +132,21 @@ public class ViewInMaps extends FragmentActivity
 	}
 
     }
+
+    private boolean checkReady() {
+        if (mMap == null) {
+            Toast.makeText(this, R.string.map_not_ready, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
     
     private void addMarkersToMap() {
 	// Uses a colored icon
         AddressMarker = mMap.addMarker(new MarkerOptions()
                 .position(AddressLocation)
-                .title(receiver)
-                .snippet(address)
+                .title("123")
+                .snippet("456")
                 .icon(BitmapDescriptorFactory
 		    .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
     }
@@ -183,5 +203,31 @@ public class ViewInMaps extends FragmentActivity
     @Override
     public void onConnectionFailed(ConnectionResult result) {
 	// Do nothing
+    }
+
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+        setLayer((String) parent.getItemAtPosition(position));
+    }
+
+    private void setLayer(String layerName) {
+        if (!checkReady()) {
+            return;
+        }
+        if (layerName.equals(getString(R.string.normal))) {
+            mMap.setMapType(MAP_TYPE_NORMAL);
+        } else if (layerName.equals(getString(R.string.hybrid))) {
+            mMap.setMapType(MAP_TYPE_HYBRID);
+        } else if (layerName.equals(getString(R.string.satellite))) {
+            mMap.setMapType(MAP_TYPE_SATELLITE);
+        } else if (layerName.equals(getString(R.string.terrain))) {
+            mMap.setMapType(MAP_TYPE_TERRAIN);
+        } else {
+            Log.i("LDA", "Error setting layer with name " + layerName);
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> arg0) {
     }
 }

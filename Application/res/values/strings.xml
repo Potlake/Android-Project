@@ -18,5 +18,17 @@
     <string name="display_settings">Display Settings</string>
     <string name="callButton">Call the customer</string>
     <string name="about_us">About us: YU ZIJIE and QIAN SHENG</string>
+    <string name="map_not_ready">Map is not ready yet</string>
+    <string name="normal">Normal</string>
+    <string name="hybrid">Hybrid</string>
+    <string name="satellite">Satellite</string>
+    <string name="terrain">Terrain</string>
+
+    <string-array name="layers_array">
+	<item>@string/normal</item>
+	<item>@string/hybrid</item>
+	<item>@string/satellite</item>
+	<item>@string/terrain</item>
+    </string-array>
 
 </resources>
