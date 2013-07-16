@@ -60,13 +60,17 @@ public class Assistant extends ListActivity {
 	    case R.id.sync:
 		new syncAllProducts().execute();
 		return true;
+	    case R.id.search:
+		Intent i = new Intent(this, SearchActivity.class);
+		startActivity(i);
+		return true;
 	    case R.id.settings:
-		Intent i = new Intent(this, SettingActivity.class);
-		startActivityForResult(i, RESULT_SETTINGS);
+		Intent j = new Intent(this, SettingActivity.class);
+		startActivityForResult(j, RESULT_SETTINGS);
 		return true;
 	    case R.id.about:
-		Intent j = new Intent(this, AboutActivity.class);
-		startActivity(j);
+		Intent k = new Intent(this, AboutActivity.class);
+		startActivity(k);
 		return true;
         }
         return super.onOptionsItemSelected(item);
