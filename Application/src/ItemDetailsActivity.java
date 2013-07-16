@@ -22,6 +22,7 @@ public class ItemDetailsActivity extends Activity {
     private String Flag;
     private String state;
     private String the_address;
+    private String address;
     private String phone_number;
     private String receiver;
 
@@ -117,6 +118,7 @@ public class ItemDetailsActivity extends Activity {
 	    the_address = cursor.getString(
 		    cursor.getColumnIndexOrThrow(CO_ADDRESS));
 	    Address.setText(the_address);
+	    address = the_address;
 
 	    Time.setText(cursor.getString(
 	    	    cursor.getColumnIndexOrThrow(CO_TIME)));
@@ -259,7 +261,7 @@ public class ItemDetailsActivity extends Activity {
 	    Intent i = new Intent(ItemDetailsActivity.this, ViewInMaps.class);
 	    i.putExtra("latitude", latitude);
 	    i.putExtra("longitude", longitude);
-	    i.putExtra("address", the_address);
+	    i.putExtra("address", address);
 	    i.putExtra("receiver", receiver);
 	    startActivity(i);
 	}

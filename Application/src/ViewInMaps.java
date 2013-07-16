@@ -145,8 +145,8 @@ public class ViewInMaps extends FragmentActivity
 	// Uses a colored icon
         AddressMarker = mMap.addMarker(new MarkerOptions()
                 .position(AddressLocation)
-                .title("123")
-                .snippet("456")
+                .title(receiver)
+                .snippet(address)
                 .icon(BitmapDescriptorFactory
 		    .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
     }
