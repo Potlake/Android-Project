@@ -25,6 +25,10 @@ public class SearchActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
 
+	Toast.makeText(getApplicationContext(),
+		"We are sorry!, The Search Activity isn't good enough!",
+		Toast.LENGTH_LONG).show();
+	
 	@SuppressWarnings("deprecation")
 	Cursor cursor = managedQuery(CONTENT_URI, FROM, null, null, null);
 
