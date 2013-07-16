@@ -23,8 +23,12 @@ public class ItemDetailsActivity extends Activity {
     private String state;
     private String the_address;
     private String phone_number;
+    private String receiver;
 
     private Uri detailUri;
+
+    private String latitude;
+    private String longitude;
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -70,9 +74,7 @@ public class ItemDetailsActivity extends Activity {
 			finish();
 			break;
 		    case R.id.mapViewButton:
-			Intent i = new Intent(getApplicationContext(), ViewInMaps.class);
-			i.putExtra("receiver_address", the_address);
-			startActivity(i);
+			new getPositionFromAddress().execute();
 			break;
 		    case R.id.callButton:
 			Intent callIntent = new Intent(Intent.ACTION_CALL);
@@ -103,16 +105,19 @@ public class ItemDetailsActivity extends Activity {
 	    }
 	    Name.setText(cursor.getString(
 	    	    cursor.getColumnIndexOrThrow(CO_NAME)));
-	    Receiver.setText(cursor.getString(
-	    	    cursor.getColumnIndexOrThrow(CO_RECEIVER)));
-	    Number.setText(cursor.getString(
-	    	    cursor.getColumnIndexOrThrow(CO_NUMBER)));
+
+	    receiver = cursor.getString(
+		    cursor.getColumnIndexOrThrow(CO_RECEIVER));
+	    Receiver.setText(receiver);
+
 	    phone_number = cursor.getString(
 		    cursor.getColumnIndexOrThrow(CO_NUMBER));
-	    Address.setText(cursor.getString(
-	    	    cursor.getColumnIndexOrThrow(CO_ADDRESS)));
+	    Number.setText(phone_number);
+
 	    the_address = cursor.getString(
 		    cursor.getColumnIndexOrThrow(CO_ADDRESS));
+	    Address.setText(the_address);
+
 	    Time.setText(cursor.getString(
 	    	    cursor.getColumnIndexOrThrow(CO_TIME)));
 	    Flag = cursor.getString(
@@ -186,6 +191,77 @@ public class ItemDetailsActivity extends Activity {
 		    isPhoneCalling = false;
 		}
 	    }
+	}
+    }
+
+    // Search Location and get a (latitude, longitude) coordinate
+    class getPositionFromAddress extends AsyncTask<String, String, String> {
+	ProgressDialog pDialog;
+
+	@Override
+	protected void onPreExecute() {
+	    super.onPreExecute();
+	    pDialog = new ProgressDialog(ItemDetailsActivity.this);
+	    pDialog.setMessage("Getting Location. Please wait...");
+	    pDialog.setIndeterminate(false);
+	    pDialog.setCancelable(false);
+	    pDialog.show();
+	}
+
+	@Override
+	protected String doInBackground(String... args) {
+	    URL url;
+	    the_address = the_address.replaceAll("\\s","+");
+	    the_address = 
+		"http://maps.googleapis.com/maps/api/geocode/json?address=" 
+		+ the_address + "&sensor=true";
+	    try {
+		url = new URL(the_address);
+		URLConnection connection = url.openConnection();
+		String line;
+		StringBuilder builder = new StringBuilder();
+		BufferedReader reader = new BufferedReader(new InputStreamReader
+			(connection.getInputStream()));
+		while((line = reader.readLine()) != null) {
+		    builder.append(line);
+		}
+		JSONObject json = new JSONObject(builder.toString());
+		try {
+		    String status = json.getString("status");
+		    if (status.equals("OK")) {
+			try {
+			    JSONArray results = json.getJSONArray("results");
+			    JSONObject detail = results.getJSONObject(0);
+			    JSONObject geometry = detail.getJSONObject("geometry");
+			    JSONObject location = geometry.getJSONObject("location");
+			    latitude = location.getString("lat");
+			    longitude = location.getString("lng");
+			} catch (JSONException e) {
+			    throw new RuntimeException(e);
+			}
+		    }
+		} catch (JSONException e) {
+		    e.printStackTrace();
+		}
+	    } catch (MalformedURLException e) {
+		e.printStackTrace();
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    } catch (JSONException e) {
+		e.printStackTrace();
+	    }
+	    return null;
+	}
+
+	@Override
+	protected void onPostExecute(String file_url) {
+	    pDialog.dismiss();
+	    Intent i = new Intent(ItemDetailsActivity.this, ViewInMaps.class);
+	    i.putExtra("latitude", latitude);
+	    i.putExtra("longitude", longitude);
+	    i.putExtra("address", the_address);
+	    i.putExtra("receiver", receiver);
+	    startActivity(i);
 	}
     }
 } 

@@ -5,15 +5,16 @@ public class ViewInMaps extends FragmentActivity
 	       LocationListener, OnMarkerClickListener {
     private GoogleMap mMap;
     private LocationClient mLocationClient;
-    private String the_address;
 
     // For Setting Marker
-    private static LatLng AddressLocation = new LatLng(45.05092,7.67832);
+    private static LatLng AddressLocation;
     private Marker AddressMarker;
 
-    // for address location
-    Geocoder myGeocoder;
-    final static int MAX_RESULT = 1;
+    private String receiver;
+    private String address;
+
+    // Creating JSON Parser object
+    JSONParser jParser = new JSONParser();
 
     // These settings are the same as the settings for the map.
     // They will in fact give you updates at the maximal rates 
@@ -29,9 +30,13 @@ public class ViewInMaps extends FragmentActivity
         setContentView(R.layout.map);
 
 	Bundle extras = getIntent().getExtras();
+
 	if (extras != null) {
-	    the_address = extras.getString("receiver_address");
-	    // searchFromLocationName(the_address);
+	    Double latitude = Double.parseDouble(extras.getString("latitude"));
+	    Double longitude = Double.parseDouble(extras.getString("longitude"));
+	    receiver = extras.getString("receiver");
+	    address = extras.getString("address");
+	    AddressLocation = new LatLng(latitude, longitude);
 	}
 	setUpMapIfNeeded();
     }
@@ -120,8 +125,8 @@ public class ViewInMaps extends FragmentActivity
 	// Uses a colored icon
         AddressMarker = mMap.addMarker(new MarkerOptions()
                 .position(AddressLocation)
-                .title("Brisbane")
-                .snippet("Population: 2,074,200")
+                .title(receiver)
+                .snippet(address)
                 .icon(BitmapDescriptorFactory
 		    .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
     }
@@ -153,31 +158,6 @@ public class ViewInMaps extends FragmentActivity
 	return false;
     }
     
-    // Search Location and get a (latitude, longitude) coordinate
-    /*
-    private void searchFromLocationName(String name) {
-	try {
-	    List<Address> result
-		= myGeocoder.getFromLocationName(name, MAX_RESULT);
-	    if ((result == null) || (result.isEmpty())) {
-		Toast.makeText(getApplicationContext(),
-			"Wrong address, Can not find this place!",
-			Toast.LENGTH_LONG).show();
-	    } else {
-		double latitude = result.get(0).getLatitude();
-		double longitude = result.get(0).getLongitude();
-		// AddressLocation = new LatLng(latitude, longitude);
-	    }
-
-	} catch (IOException e) {
-	    e.printStackTrace();
-	    Toast.makeText(getApplicationContext(),
-		    "The network is unavailable!",
-		    Toast.LENGTH_LONG).show();
-	}
-    }
-    */
-
     // Implementation of LocationListener
     @Override
     public void onLocationChanged(Location location) {

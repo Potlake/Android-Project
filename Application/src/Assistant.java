@@ -160,7 +160,8 @@ public class Assistant extends ListActivity {
 	    	e.printStackTrace();
 	    }
 	    return null;
-    }
+	}
+	@Override
 	protected void onPostExecute(String file_url) {
 	    // dismiss the dialog after getting all products
 	    pDialog.dismiss();
