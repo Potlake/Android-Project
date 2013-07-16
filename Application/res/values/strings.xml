@@ -23,7 +23,8 @@
     <string name="hybrid">Hybrid</string>
     <string name="satellite">Satellite</string>
     <string name="terrain">Terrain</string>
-    <string name="search">Search...</string>
+    <string name="search">Search</string>
+    <string name="search_bar">Type to search</string>
 
     <string-array name="layers_array">
 	<item>@string/normal</item>

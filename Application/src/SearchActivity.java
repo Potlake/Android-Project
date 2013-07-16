@@ -1,5 +1,8 @@
 package com.delivery.assistant;
 
+import static com.delivery.assistant.Constants.CONTENT_URI;
+import static com.delivery.assistant.Constants.CO_NAME;
+
 public class SearchActivity extends Activity {
 
 	private ListView lv;
@@ -13,14 +16,26 @@ public class SearchActivity extends Activity {
 	// ArrayList for Listview
 	ArrayList<HashMap<String, String>> productList;
 
+	List<String> products = new ArrayList<String>();
+
+	private static String[] FROM = {CO_NAME};
+
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
 
-	String products[] = {"Dell Inspiron", "HTC One X", "HTC Wildfire S",
-	    "HTC Sense", "HTC Sensation XE", "iPhone 4S", "Samsung Galaxy Note 800",
-	    "Samsung Galaxy S3", "MacBook Air", "Mac Mini", "MacBook Pro"};
+	@SuppressWarnings("deprecation")
+	Cursor cursor = managedQuery(CONTENT_URI, FROM, null, null, null);
+
+	if (cursor != null) {
+	    cursor.moveToFirst();
+	    while (cursor.isAfterLast() == false) {
+		products.add(cursor.getString(
+			    cursor.getColumnIndexOrThrow(CO_NAME)));
+		cursor.moveToNext();
+	    }
+	}
 
 	lv = (ListView) findViewById(R.id.list_view);
         inputSearch = (EditText) findViewById(R.id.inputSearch);

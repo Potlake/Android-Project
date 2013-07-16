@@ -64,6 +64,10 @@
             android:name=".AboutActivity"
 	    android:label="About" />
 
+	<activity
+            android:name=".SearchActivity"
+	    android:label="Search" />
+
     </application>
 
 </manifest>
