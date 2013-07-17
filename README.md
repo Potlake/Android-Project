@@ -1,7 +1,7 @@
 Android Project
 ===============
 
-## Background Story
+## Background story
 
 Hello all, I used to be a student studying in Politecnico di Torino in Italy, and this is my android application project for the innovative IT services course, starting from year 2013.
 
@@ -14,7 +14,7 @@ In order to pass this course, this four basic requirements have to be fulfilled.
 3. Able to read and write MySQL database from remote server using json and php.
 4. Using google api, e.g. Google Maps or Google Calendar.
 
-## Project Topic
+## Topic of the project
 
 The topic of my android project is **Delivery Assistant**, aiming to assist delivery man in getting the job done.
 
