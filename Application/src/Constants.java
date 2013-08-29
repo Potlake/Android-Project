@@ -1,4 +1,7 @@
 package com.delivery.assistant;
+
+import android.net.Uri;
+
 public interface Constants {
 
     // Table Names
@@ -37,7 +40,7 @@ public interface Constants {
 
     // URLs
     public static final String URL_ALL_PRODUCTS
-	= "http://yuz.me/android/all.php";
+	= "http://yzj.name/all.php";
     public static final String URL_UPDATE_PRODUCTS
-	= "http://yuz.me/android/update.php";
+	= "http://yzj.name/update.php";
 }
