@@ -1,11 +1,20 @@
 package com.delivery.assistant;
 
-import static com.delivery.assistant.Constants.TABLE_NAME;
-import static com.delivery.assistant.Constants.CO_ID;
 import static com.delivery.assistant.Constants.AUTHORITY;
-import static com.delivery.assistant.Constants.CONTENT_TYPE;
 import static com.delivery.assistant.Constants.CONTENT_ITEM_TYPE;
+import static com.delivery.assistant.Constants.CONTENT_TYPE;
 import static com.delivery.assistant.Constants.CONTENT_URI;
+import static com.delivery.assistant.Constants.CO_ID;
+import static com.delivery.assistant.Constants.TABLE_NAME;
+import android.content.ContentProvider;
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.UriMatcher;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
+import android.net.Uri;
+import android.text.TextUtils;
 
 public class MyContentProvider extends ContentProvider {
    private static final int EVENTS = 1;
