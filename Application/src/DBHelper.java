@@ -1,14 +1,17 @@
 package com.delivery.assistant;
 
-import static com.delivery.assistant.Constants.TABLE_NAME;
-import static com.delivery.assistant.Constants.CO_ID;
-import static com.delivery.assistant.Constants.CO_NAME;
-import static com.delivery.assistant.Constants.CO_RECEIVER;
-import static com.delivery.assistant.Constants.CO_NUMBER;
 import static com.delivery.assistant.Constants.CO_ADDRESS;
-import static com.delivery.assistant.Constants.CO_TIME;
 import static com.delivery.assistant.Constants.CO_COMPLETED;
 import static com.delivery.assistant.Constants.CO_FLAG;
+import static com.delivery.assistant.Constants.CO_ID;
+import static com.delivery.assistant.Constants.CO_NAME;
+import static com.delivery.assistant.Constants.CO_NUMBER;
+import static com.delivery.assistant.Constants.CO_RECEIVER;
+import static com.delivery.assistant.Constants.CO_TIME;
+import static com.delivery.assistant.Constants.TABLE_NAME;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "delivery.db";
