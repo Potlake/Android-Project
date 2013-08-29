@@ -1,29 +1,51 @@
 package com.delivery.assistant;
 
 // All the Constants
-import static com.delivery.assistant.Constants.CO_ID;
-import static com.delivery.assistant.Constants.CO_NAME;
-import static com.delivery.assistant.Constants.CO_RECEIVER;
-import static com.delivery.assistant.Constants.CO_NUMBER;
+import static com.delivery.assistant.Constants.CONTENT_ITEM_TYPE;
+import static com.delivery.assistant.Constants.CONTENT_URI;
 import static com.delivery.assistant.Constants.CO_ADDRESS;
-import static com.delivery.assistant.Constants.CO_TIME;
 import static com.delivery.assistant.Constants.CO_COMPLETED;
 import static com.delivery.assistant.Constants.CO_FLAG;
-
-import static com.delivery.assistant.Constants.TAG_PRODUCTS;
-import static com.delivery.assistant.Constants.TAG_SUCCESS;
-import static com.delivery.assistant.Constants.TAG_ID;
-import static com.delivery.assistant.Constants.TAG_NAME;
-import static com.delivery.assistant.Constants.TAG_RECEIVER;
-import static com.delivery.assistant.Constants.TAG_NUMBER;
+import static com.delivery.assistant.Constants.CO_ID;
+import static com.delivery.assistant.Constants.CO_NAME;
+import static com.delivery.assistant.Constants.CO_NUMBER;
+import static com.delivery.assistant.Constants.CO_RECEIVER;
+import static com.delivery.assistant.Constants.CO_TIME;
 import static com.delivery.assistant.Constants.TAG_ADDRESS;
-import static com.delivery.assistant.Constants.TAG_TIME;
 import static com.delivery.assistant.Constants.TAG_COMPLETED;
-
+import static com.delivery.assistant.Constants.TAG_NAME;
+import static com.delivery.assistant.Constants.TAG_NUMBER;
+import static com.delivery.assistant.Constants.TAG_PRODUCTS;
+import static com.delivery.assistant.Constants.TAG_RECEIVER;
+import static com.delivery.assistant.Constants.TAG_SUCCESS;
+import static com.delivery.assistant.Constants.TAG_TIME;
 import static com.delivery.assistant.Constants.URL_ALL_PRODUCTS;
 import static com.delivery.assistant.Constants.URL_UPDATE_PRODUCTS;
-import static com.delivery.assistant.Constants.CONTENT_URI;
-import static com.delivery.assistant.Constants.CONTENT_ITEM_TYPE;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.ListActivity;
+import android.app.ProgressDialog;
+import android.content.ContentValues;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
 public class Assistant extends ListActivity {
     private static String[] FROM = {CO_ID, CO_NAME, 
