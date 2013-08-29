@@ -2,14 +2,42 @@ package com.delivery.assistant;
 
 import static com.delivery.assistant.Constants.CONTENT_ITEM_TYPE;
 import static com.delivery.assistant.Constants.CONTENT_URI;
-import static com.delivery.assistant.Constants.CO_ID;
-import static com.delivery.assistant.Constants.CO_NAME;
-import static com.delivery.assistant.Constants.CO_RECEIVER;
-import static com.delivery.assistant.Constants.CO_NUMBER;
 import static com.delivery.assistant.Constants.CO_ADDRESS;
-import static com.delivery.assistant.Constants.CO_TIME;
 import static com.delivery.assistant.Constants.CO_COMPLETED;
 import static com.delivery.assistant.Constants.CO_FLAG;
+import static com.delivery.assistant.Constants.CO_NAME;
+import static com.delivery.assistant.Constants.CO_NUMBER;
+import static com.delivery.assistant.Constants.CO_RECEIVER;
+import static com.delivery.assistant.Constants.CO_TIME;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 public class ItemDetailsActivity extends Activity {
 
@@ -258,7 +286,7 @@ public class ItemDetailsActivity extends Activity {
 	@Override
 	protected void onPostExecute(String file_url) {
 	    pDialog.dismiss();
-	    Intent i = new Intent(ItemDetailsActivity.this, ViewInMaps.class);
+	    Intent i = new Intent(ItemDetailsActivity.this, MapsActivity.class);
 	    i.putExtra("latitude", latitude);
 	    i.putExtra("longitude", longitude);
 	    i.putExtra("address", address);
