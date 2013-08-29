@@ -1,5 +1,8 @@
 package com.delivery.assistant;
 
+import android.os.Bundle;
+import android.preference.PreferenceActivity;
+
 public class SettingActivity extends PreferenceActivity {
 
 	@SuppressWarnings("deprecation")
