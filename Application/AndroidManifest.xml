@@ -68,6 +68,10 @@
             android:name=".SearchActivity"
 	    android:label="Search" />
 
+	<activity
+            android:name=".LoginActivity"
+	    android:label="Login" />
+
     </application>
 
 </manifest>
