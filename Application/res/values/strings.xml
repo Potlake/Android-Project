@@ -25,6 +25,11 @@
     <string name="terrain">Terrain</string>
     <string name="search">Search</string>
     <string name="search_bar">Type to search</string>
+    <string name="login_name">User Name</string>
+    <string name="login_password">Password</string>
+    <string name="login">Login</string>
+    <string name="change_password">Change Password</string>
+    <string name="image">Company Logo</string>
 
     <string-array name="layers_array">
 	<item>@string/normal</item>
