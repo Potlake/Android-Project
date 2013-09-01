@@ -41,23 +41,25 @@
         android:layout_height="wrap_content"
         android:padding="10dip"
         android:layout_below="@id/header">
-        <!--  Email Label -->
+        <!-- User Name -->
         <TextView android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:textColor="#372c24"
 	    android:text="@string/login_name"/>
         <EditText android:layout_width="fill_parent"
+	    android:id="@+id/login_username"
 	    android:layout_height="wrap_content"
 	    android:inputType="text"
 	    android:layout_marginTop="5dip"
 	    android:layout_marginBottom="20dip"
 	    android:singleLine="true"/>
-        <!--  Password Label -->
+        <!-- Password -->
         <TextView android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:textColor="#372c24"
 	    android:text="@string/login_password"/>
         <EditText android:layout_width="fill_parent"
+	    android:id="@+id/login_password"
 	    android:layout_height="wrap_content"
 	    android:layout_marginTop="5dip"
 	    android:singleLine="true"
@@ -68,7 +70,7 @@
 	    android:layout_height="wrap_content"
 	    android:layout_marginTop="10dip"
 	    android:text="@string/login"/>
-        <!-- Link to Registration Screen -->		
+        <!-- Link to Change Password Screen -->		
         <TextView android:id="@+id/change_password" 
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
