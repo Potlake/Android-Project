@@ -31,7 +31,7 @@ The original purpose of creating this project is for the exam. However, since I 
 Until now, some impovements will be added are:
 
 1. Provide search function in the main list view.
-2. Add a Login page
+2. Add a login page (In progress...)
 3. Improve UI graphics
 4. Provide suggested path from current location to the destination
 5. Better data syncing efficiency
